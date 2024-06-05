@@ -10,5 +10,5 @@ class ArrowDirection(Enum):
 
 
 def getRandomArrowDirection() -> ArrowDirection:
-    index = random.randint(0, len(ArrowDirection))
+    index = random.randint(0, len(ArrowDirection) - 1)
     return ArrowDirection(index)

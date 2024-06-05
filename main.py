@@ -4,16 +4,34 @@ import time
 from enum import Enum
 import keyboard
 from arrows import ArrowsP1, ArrowsP2
-import gameLogic
+import gameState
 import controller
+import glob
+
+SCREEN_WIDTH_PERCENT = 0.75
+SCREEN_HEIGHT_PERCENT = 0.75
+SCREEN_TITLE = "QUICK TIME EVENT: THE EVENT"
 
 
-window = turtle.Screen()
-window.title("Quick Time event by AAAAAAAAAAA")
-window.setup(width=1200, height=600)
-# variables
-player1Points = 0
-player2Points = 0
+def screenSetup(fullScreen=False) -> turtle._Screen:
+
+    # setup screen
+    screen = turtle.Screen()
+    if fullScreen:
+        screen.setup(width=1.0, height=1.0)
+    else:
+        screen.setup(width=SCREEN_WIDTH_PERCENT, height=SCREEN_HEIGHT_PERCENT)
+    screen.title(SCREEN_TITLE)
+
+    # adding shapes
+    arrows = glob.glob("assets/*.gif")
+    for arrow in arrows:
+        screen.addshape(arrow)
+    return screen
+
+
+window = screenSetup()
+
 currentState = ""
 
 
@@ -79,34 +97,34 @@ def randomizer():
         left()
 
 
-def pointsManager():
-    global player1Points, player2Points
-    pressedKey = keyboard.read_key()
+# def pointsManager():
+#     global player1Points, player2Points
+#     pressedKey = keyboard.read_key()
 
-    if pressedKey in ArrowsP2 and str(pen.shape()) == "clear.gif":
-        print("FALSE FALSE FALSE FALSE FLASE")
-        player2Points -= 1
-    if pressedKey in ArrowsP1 and str(pen.shape()) == "clear.gif":
-        print("FALSE FALSE FALSE FALSE FLASE")
-        player1Points -= 1
-    if pressedKey == ArrowsP1[currentState].value:
-        pen.shape("clear.gif")
-        player1Points += 1
-        print("P1 " + str(player1Points))
-        random_delay = random.uniform(0.2, 5)
-        time.sleep(random_delay)
-        randomizer()
-    if pressedKey == ArrowsP2[currentState].value:
-        pen.shape("clear.gif")
-        player2Points += 1
-        print("P2 " + str(player2Points))
-        random_delay = random.uniform(0.2, 5)
-        time.sleep(random_delay)
-        randomizer()
+#     if pressedKey in ArrowsP2 and str(pen.shape()) == "clear.gif":
+#         print("FALSE FALSE FALSE FALSE FLASE")
+#         player2Points -= 1
+#     if pressedKey in ArrowsP1 and str(pen.shape()) == "clear.gif":
+#         print("FALSE FALSE FALSE FALSE FLASE")
+#         player1Points -= 1
+#     if pressedKey == ArrowsP1[currentState].value:
+#         pen.shape("clear.gif")
+#         player1Points += 1
+#         print("P1 " + str(player1Points))
+#         random_delay = random.uniform(0.2, 5)
+#         time.sleep(random_delay)
+#         randomizer()
+#     if pressedKey == ArrowsP2[currentState].value:
+#         pen.shape("clear.gif")
+#         player2Points += 1
+#         print("P2 " + str(player2Points))
+#         random_delay = random.uniform(0.2, 5)
+#         time.sleep(random_delay)
+#         randomizer()
 
 
 # Game setup
-game = gameLogic.GameState()
+game = gameState.GameState()
 
 # handle keyboard
 controller.setUpKeyHandlers(window, game, randomizer)

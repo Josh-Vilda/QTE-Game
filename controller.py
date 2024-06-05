@@ -1,4 +1,4 @@
-from gameLogic import GameState
+from gameState import GameState
 import turtle
 from typing import Callable, Optional
 
