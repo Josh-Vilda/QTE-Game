@@ -4,6 +4,8 @@ import time
 from enum import Enum
 import keyboard
 from arrows import ArrowsP1, ArrowsP2
+import gameLogic
+import controller
 
 
 window = turtle.Screen()
@@ -103,12 +105,10 @@ def pointsManager():
         randomizer()
 
 
-# Keyboard Set up
-window.listen()
-randomizer()
-while True:
-    window.update()
-    pointsManager()
+# Game setup
+game = gameLogic.GameState()
 
-    time.sleep(random.randint(1, 15) / 100)  # random sleep interval time
+# handle keyboard
+controller.setUpKeyHandlers(window, game, randomizer)
+window.listen()
 window.mainloop()

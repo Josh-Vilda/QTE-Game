@@ -10,9 +10,11 @@ class GameState:
         self.currentDirection = arrows2.getRandomArrowDirection()
 
     def player1GotPoint(self):
+        print("Player 1 got point")
         self.player1Points += 1
         self.roundNumber += 1
 
     def player2GotPoint(self):
+        print("player 2 got point")
         self.player2Points += 1
         self.roundNumber += 1
