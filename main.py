@@ -6,6 +6,8 @@ import keyboard
 from arrows import ArrowsP1, ArrowsP2
 import gameLogic
 import controller
+from timer import countdown
+import threading
 
 
 window = turtle.Screen()
@@ -26,18 +28,22 @@ window.addshape("assets/up.gif")
 window.addshape("assets/down.gif")
 window.addshape("assets/right.gif")
 window.addshape("assets/left.gif")
-# Pen
+#pen
 pen = turtle.Turtle()
 pen.shape("assets/up.gif")
 pen.speed(0)
 pen.up()
 pen.goto(0, 260)
 pen.speed(0)
-pen.write("Score: 0  High Score: 0", align="center", font=("Courier", 24, "normal"))
 pen.goto(0, 0)
 pen.down()
 
+#Timer Pen
+timeManager = turtle.Turtle()
+timeManager.hideturtle()
+timeManager.goto(0,260)
 
+    
 # functions
 def up():
     pen.shape("assets/up.gif")
@@ -107,8 +113,13 @@ def pointsManager():
 
 # Game setup
 game = gameLogic.GameState()
-
 # handle keyboard
 controller.setUpKeyHandlers(window, game, randomizer)
 window.listen()
+try:
+    t1 =threading.Thread(target=countdown,args=(90, timeManager))
+    t1.start()
+except KeyboardInterrupt:
+    GPIO.cleanup()
 window.mainloop()
+#threading the countdown function
