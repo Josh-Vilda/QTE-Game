@@ -43,6 +43,19 @@ timeManager = turtle.Turtle()
 timeManager.hideturtle()
 timeManager.goto(0,260)
 
+#P1 Pen
+player1PointsManager = turtle.Turtle()
+player1PointsManager.up()
+player1PointsManager.ht()
+player1PointsManager.goto(-500,260)
+player1PointsManager.write("P1: {}".format(player1Points), align="center", font=("Courier", 24, "normal"))
+
+#P2 Pen
+player2PointsManager = turtle.Turtle()
+player2PointsManager.up()
+player2PointsManager.ht()
+player1PointsManager.goto(500,260)
+player1PointsManager.write("P2: {}".format(player2Points), align="center", font=("Courier", 24, "normal"))
     
 # functions
 def up():
@@ -116,10 +129,10 @@ game = gameLogic.GameState()
 # handle keyboard
 controller.setUpKeyHandlers(window, game, randomizer)
 window.listen()
+#threading the countdown function
 try:
     t1 =threading.Thread(target=countdown,args=(90, timeManager))
     t1.start()
 except KeyboardInterrupt:
     GPIO.cleanup()
 window.mainloop()
-#threading the countdown function
