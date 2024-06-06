@@ -129,11 +129,10 @@ game = gameLogic.GameState()
 # handle keyboard
 controller.setUpKeyHandlers(window, game, randomizer)
 window.listen()
+#threading the countdown function
 try:
     t1 =threading.Thread(target=countdown,args=(90, timeManager))
     t1.start()
 except KeyboardInterrupt:
     GPIO.cleanup()
 window.mainloop()
-pointsManager()
-#threading the countdown function
