@@ -10,5 +10,5 @@ class ArrowDirection(Enum):
 
 
 def getRandomArrowDirection() -> ArrowDirection:
-    index = random.randint(0, len(ArrowDirection))
+    index = random.randint(0, len(ArrowDirection)-1)# 4 is out of bounds
     return ArrowDirection(index)
