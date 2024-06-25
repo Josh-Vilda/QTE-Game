@@ -1,28 +1,21 @@
 import turtle
-import random
-import time
-from enum import Enum
-import keyboard
-from arrows import ArrowsP1, ArrowsP2
 from gameLogic import GameState, scoreWriter
-import controller
+from controller import PlayerController
 from timer import countdown
+import RPi.GPIO as GPIO
 import threading
 import os
 import sys
-#import RPi.GPIO as GPIO 
 
 window = turtle.Screen()
 window.title("Quick Time event by AAAAAAAAAAA")
 window.setup(width=1200, height=600)
 
 #controller set up
-p1Controller = controller.Player1Controller(1,3,5,7) #RasPi pins
-p2Controller = controller.Player2Controller(15,16,17,18) #RasPi pins
-
-
-#ArrowState = Enum("ArrowState", ["UP", "DOWN", "LEFT", "RIGHT"]) currently not used
-
+GPIO.setmode(GPIO.BCM)
+controller1 = PlayerController(11,3,5,7) #RasPi pins
+controller2 = PlayerController(8,10,12,13) #RasPi pins
+pinList = controller1.pinArray + controller2.pinArray
 # add the shapes
 window.addshape("assets/clear.gif")
 window.addshape("assets/up.gif")
@@ -73,13 +66,15 @@ window.listen()
 window.onkeypress(restartGame,"r")
 
 
-def checkPoints(p1pm,p2pm,pen,game):
+def checkPoints(p1pm,p2pm,pen,game,controller1,controller2):
         while(True):
-            game.pointsManager(p1pm,p2pm,pen)
+            for pinNumber in pinList:
+             if GPIO.input(pinNumber):
+                 game.pointsManager(p1pm,p2pm,pen,pinNumber,controller1,controller2)           
 #threading the countdown function
 try:
     t1 =threading.Thread(target=countdown,args=(90, timeManager,game))
-    t2 =threading.Thread(target=checkPoints,args=(player1PointsManager,player2PointsManager,pen,game))
+    t2 =threading.Thread(target=checkPoints,args=(player1PointsManager,player2PointsManager,pen,game,controller1,controller2))
     t1.start()
     t2.start()
 except KeyboardInterrupt:

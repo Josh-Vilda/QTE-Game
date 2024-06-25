@@ -2,6 +2,8 @@ from arrows import ArrowsP1, ArrowsP2
 import random
 import keyboard
 import time
+from controller import PlayerController as Controller
+import RPi.GPIO as GPIO
 
 class GameState:
 
@@ -79,20 +81,19 @@ class GameState:
         p2pm.write("P2: {}".format(self.player2Points), align="center", font=("Courier", 24, "normal"))
         
         
-    def pointsManager(self,p1pm,p2pm,pen):
-        pressedKey = keyboard.read_key()
-        if pressedKey == ArrowsP1[self.currentDirection].value and not(str(pen.shape())=="assets/clear.gif"):
+    def pointsManager(self,p1pm,p2pm,pen,pinNumber,controller1,controller2): #see if you can remove the and statements
+        if pinNumber == ArrowsP1[self.currentDirection].value and not(str(pen.shape())=="assets/clear.gif"):
             self.blank()
             self.player1GotPoint(p1pm)
-            self.spamDetection()
+            self.spamDetection(controller1,controller2)
             self.randomizer()
-        elif pressedKey == ArrowsP2[self.currentDirection].value and not(str(pen.shape())=="assets/clear.gif"):
+        elif pinNumber == ArrowsP2[self.currentDirection].value and not(str(pen.shape())=="assets/clear.gif"):
             self.player2GotPoint(p2pm)
             self.blank()
-            self.spamDetection()
+            self.spamDetection(controller1,controller2)
             self.randomizer()    
     
-    def spamDetection(self):
+    def spamDetection(self,controller1,controller2):
         passedTime = 0
         print("before loop")
         random_delay = random.uniform(0.2, 2.5)
@@ -100,20 +101,24 @@ class GameState:
         t = time.time()
         while(passedTime <= random_delay):
             #spam detection so if key is pressed add to counter and if it reaches 5 activate the pump
-            if keyboard.is_pressed("w")or keyboard.is_pressed("a")or keyboard.is_pressed("s")or keyboard.is_pressed("d"):
-                self.spamP2 +=1
-                print("P2 BOZO")
-                if(self.spamP2==5):
-                    self.spamP2 =0
-                    print("PUMP ON P1")
-            if keyboard.is_pressed("up")or keyboard.is_pressed("down")or keyboard.is_pressed("right")or keyboard.is_pressed("left"):
-                self.spamP1 +=1
-                print("P1 BOZO")
-                if(self.spamP1==5):
-                    self.spamP1 =0
-                    print("PUMP ON P1")                        
+            for pinNumber in controller2.pinArray:
+                if GPIO.input(pinNumber):
+                    self.spamP2 +=1
+                    print("P2 BOZO")
+                    if(self.spamP2==5):
+                        self.spamP2 =0
+                        print("PUMP ON P1")
+            for pinNumber in controller1.pinArray:            
+                if GPIO.input(pinNumber):
+                    self.spamP1 +=1
+                    print("P1 BOZO")
+                    if(self.spamP1==5):
+                        self.spamP1 =0
+                        print("PUMP ON P1")                        
             passedTime = time.time() - t    
         print("boop")          
+
+
                       
 class scoreWriter: #Responsible for writing score to screen
     def __init__(self,scoreP1,scoreP2) -> None:
