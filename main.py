@@ -13,8 +13,8 @@ window.setup(width=1200, height=600)
 
 #controller set up
 GPIO.setmode(GPIO.BCM)
-controller1 = PlayerController(11,3,5,7) #RasPi pins
-controller2 = PlayerController(8,10,12,13) #RasPi pins
+controller1 = PlayerController(11,3,5,7,13) #RasPi pins Up Down Left Right Reset
+controller2 = PlayerController(8,10,12,16,18) #RasPi pins
 pinList = controller1.pinArray + controller2.pinArray
 # add the shapes
 window.addshape("assets/clear.gif")
@@ -56,21 +56,18 @@ scoreWriter.scoreP2.up()
 scoreWriter.scoreP2.ht()
 scoreWriter.scoreP2.goto(-500,260)
 scoreWriter.scoreP2.write("P2: {}".format(game.player2Points), align="center", font=("Courier", 24, "normal"))
-
-
-# handle keyboard
-#controller.setUpKeyHandlers(window, game, scoreWriter,ArrowsP1,ArrowsP2,game.randomizer)
 def restartGame():
     os.execl(sys.executable, sys.executable, *sys.argv)
 window.listen()
-window.onkeypress(restartGame,"r")
-
 
 def checkPoints(p1pm,p2pm,pen,game,controller1,controller2):
         while(True):
             for pinNumber in pinList:
              if GPIO.input(pinNumber):
-                 game.pointsManager(p1pm,p2pm,pen,pinNumber,controller1,controller2)           
+                 game.pointsManager(p1pm,p2pm,pen,pinNumber,controller1,controller2)
+            if(GPIO.input(controller1.resetPin) or GPIO.input(controller2.resetPin)):
+                restartGame()
+
 #threading the countdown function
 try:
     t1 =threading.Thread(target=countdown,args=(90, timeManager,game))

@@ -14,18 +14,21 @@ def nothing():
 
 
 class PlayerController:
-    def __init__(self,upPin,downPin,leftPin,rightPin):
+    def __init__(self,upPin,downPin,leftPin,rightPin,resetPin):
         
         self.upPin = upPin
         self.downPin = downPin
         self.leftPin = leftPin
         self.rightPin = rightPin
+        self.resetPin = resetPin
+        
         
         self.pinArray =[self.upPin,self.downPin,self.rightPin,self.leftPin]
         
         GPIO.setup(self.upPin,GPIO.IN)
         GPIO.setup(self.downPin,GPIO.IN)
         GPIO.setup(self.rightPin,GPIO.IN)
-        GPIO.setup(self.leftPin,GPIO.IN)     
+        GPIO.setup(self.leftPin,GPIO.IN) 
+        GPIO.setup(self.resetPin, GPIO.IN)    
         print("Player Controller Activated")
     
