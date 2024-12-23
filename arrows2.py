@@ -8,7 +8,10 @@ class ArrowDirection(Enum):
     LEFT = 2
     RIGHT = 3
 
-
+'''
 def getRandomArrowDirection() -> ArrowDirection:
     index = random.randint(0, len(ArrowDirection)-1)# 4 is out of bounds
+    print(index)
     return ArrowDirection(index)
+'''
+
