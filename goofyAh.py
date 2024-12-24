@@ -1,21 +1,29 @@
 import pygame
 from sys import exit
+from player import Player
 
 def main():
 
-    def playerChoice():
+    def playerChoice(playerGroup):
         print("WE CHOOSING BOYS")
         playerPrompt = font.render('Please choose players', True, (0, 0, 0))
         playerPrompt_rect = playerPrompt.get_rect(center=(640,512))
-        screen.blit(background, playerPrompt_rect)
-        if event.type == pygame.KEYDOWN:
-            print("we in boys")
-            if event.key == pygame.K_1:
-                player1 = playerGroup.add(Player(1))
-                print("p1")
-            if event.key == pygame.K_2:
-                player2 = playerGroup.add(Player(2))
-                print("p2")
+        screen.blit(playerPrompt, playerPrompt_rect)
+        while True:
+            if event.type == pygame.KEYUP or event.type == pygame.KEYDOWN:
+                print("we in boys")
+                if event.mod & pygame.K_1:
+                    player1 = Player(1)
+                    playerGroup.add(player1)
+                    player1.assignIcon()
+                    print("p1")
+                    return 1
+                if event.mod & pygame.K_2:
+                    player2 = Player(1)
+                    playerGroup.add(player2)
+                    player2.assignIcon()
+                    print("p2")
+                    return 1
 
     pygame.init()
     screen = pygame.display.set_mode((1280, 1024))
@@ -30,8 +38,7 @@ def main():
     screen.blit(background, (0,0))
 
     playerGroup = pygame.sprite.Group()
-    player1 = playerGroup.add(Player(1))
-    player2 = playerGroup.add(Player(2))
+    pygame.event.clear()
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -41,35 +48,8 @@ def main():
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                     game_active = True
                     print("game no longer false")
-                    playerChoice()
+                    playerChoice(playerGroup)
         pygame.display.update()
         clock.tick(60)
 
 if __name__ == '__main__': main()
-
-class Player(pygame.sprite.Sprite):
-    def __init__(self, playerNum):
-        super().__init__()
-        self.playerNum = playerNum
-        if playerNum == 1:
-            self.pointer = pygame.image.load('assets/p1PointerUp.png').convert_alpha()
-            y_pos = 100
-        else:
-            self.pointer = pygame.image.load('assets/p2PointerUp.png').convert_alpha()
-            self.pointerRect = self.pointer.get.rect()
-            y_pos = 500
-
-    def player_input(self):
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_w]:
-            self.pointer = self.pointer
-        elif keys[pygame.K_d]:
-            self.pointer = pygame.transform.rotate(self.pointer, 90)
-        elif keys[pygame.K_s]:
-            self.pointer = pygame.transform.rotate(self.pointer, 180)
-        elif keys[pygame.K_a]:
-            self.pointer = pygame.transform.rotate(self.pointer, 270)
-
-
-    def update(self):
-        self.player_input(self)
