@@ -1,17 +1,17 @@
 import pygame
 
 class Player(pygame.sprite.Sprite):
-    all_players = []
-    bothPlayersHaveSelected = False
 
-    def __init__(self, playerNum):
+    def __init__(self, playerNum, x_pos, up_key, right_key, down_key, left_key):
         super().__init__()
+        self.x_pos = x_pos
         self.playerNum = playerNum
+        self.up_key = up_key
+        self.right_key = right_key
+        self.down_key = down_key
+        self.left_key = left_key
         self.directionSelected = False
         self.selectedRotation = None
-        self.hasRotated = False
-
-        Player.all_players.append(self)
 
         if self.playerNum == 1:
             self.originalPointer = pygame.image.load('assets/p1PointerUp.png').convert_alpha()
@@ -21,64 +21,38 @@ class Player(pygame.sprite.Sprite):
             y_pos = 600
 
         self.image = self.originalPointer
-        self.rect = self.image.get_rect(center=(300, y_pos))
+        self.rect = self.image.get_rect(center=(self.x_pos, y_pos))
 
         self.angle = 0
         self.rotationSpeed = 5
 
-    def player_input(self):
-        if not Player.bothPlayersHaveSelected and not self.hasRotated:
+    def player_input(self, players):
+        if not self.directionSelected:
             keys = pygame.key.get_pressed()
 
-            # Player 1 controls
-            if self.playerNum == 1:
-                if keys[pygame.K_w]:
-                    self.selectedRotation = 0
-                    self.directionSelected = True
-                elif keys[pygame.K_d]:
-                    self.selectedRotation = 270
-                    self.directionSelected = True
-                elif keys[pygame.K_s]:
-                    self.selectedRotation = 180
-                    self.directionSelected = True
-                elif keys[pygame.K_a]:
-                    self.selectedRotation = 90
-                    self.directionSelected = True
+            if keys[self.up_key]:
+                self.selectedRotation = 0
+                self.directionSelected = True
+            elif keys[self.right_key]:
+                self.selectedRotation = 270
+                self.directionSelected = True
+            elif keys[self.down_key]:
+                self.selectedRotation = 180
+                self.directionSelected = True
+            elif keys[self.left_key]:
+                self.selectedRotation = 90
+                self.directionSelected = True
 
-            # Player 2 controls
-            if self.playerNum == 2:
-                if keys[pygame.K_UP]:
-                    self.selectedRotation = 0
-                    self.directionSelected = True
-                elif keys[pygame.K_RIGHT]:
-                    self.selectedRotation = 270
-                    self.directionSelected = True
-                elif keys[pygame.K_DOWN]:
-                    self.selectedRotation = 180
-                    self.directionSelected = True
-                elif keys[pygame.K_LEFT]:
-                    self.selectedRotation = 90
-                    self.directionSelected = True
-
-            # Check if both players have selected
-            Player.bothPlayersHaveSelected = all(
-                player.directionSelected for player in Player.all_players
-            )
-
-    def update(self):
+    def update(self, players):
         # Continuous rotation
-        if not Player.bothPlayersHaveSelected:
-            rotatedPointer = pygame.transform.rotate(self.originalPointer, self.angle)
-            self.image = rotatedPointer
+        if not all(player.directionSelected for player in players):
+            self.image = pygame.transform.rotate(self.originalPointer, self.angle)
             self.rect = self.image.get_rect(center=self.rect.center)
             self.angle += self.rotationSpeed
 
         # Reveal
-        elif not self.hasRotated:
+        elif all(player.directionSelected for player in players):
             if self.selectedRotation is not None:
-                rotatedPointer = pygame.transform.rotate(self.originalPointer, self.selectedRotation)
-                self.image = rotatedPointer
+                self.image = pygame.transform.rotate(self.originalPointer, self.selectedRotation)
                 self.rect = self.image.get_rect(center=self.rect.center)
-                self.hasRotated = True
 
-        self.player_input()
