@@ -10,8 +10,6 @@ class Player(pygame.sprite.Sprite):
         self.right_key = right_key
         self.down_key = down_key
         self.left_key = left_key
-        self.directionSelected = False
-        self.selectedRotation = None
 
         if self.playerNum == 1:
             self.originalPointer = pygame.image.load('assets/p1PointerUp.png').convert_alpha()
@@ -26,33 +24,31 @@ class Player(pygame.sprite.Sprite):
         self.angle = 0
         self.rotationSpeed = 5
 
-    def player_input(self, players):
-        if not self.directionSelected:
-            keys = pygame.key.get_pressed()
 
-            if keys[self.up_key]:
-                self.selectedRotation = 0
-                self.directionSelected = True
-            elif keys[self.right_key]:
-                self.selectedRotation = 270
-                self.directionSelected = True
-            elif keys[self.down_key]:
-                self.selectedRotation = 180
-                self.directionSelected = True
-            elif keys[self.left_key]:
-                self.selectedRotation = 90
-                self.directionSelected = True
+    def get_input(self):
+        keys = pygame.key.get_pressed()
+        # switch match case
+        angle = None
+        if keys[self.up_key]:
+            angle = 0
+        elif keys[self.right_key]:
+            angle = 270
+        elif keys[self.down_key]:
+            angle = 180
+        elif keys[self.left_key]:
+            angle = 90
+        return angle
 
-    def update(self, players):
+    def update(self):
         # Continuous rotation
-        if not all(player.directionSelected for player in players):
-            self.image = pygame.transform.rotate(self.originalPointer, self.angle)
-            self.rect = self.image.get_rect(center=self.rect.center)
-            self.angle += self.rotationSpeed
+        self.image = pygame.transform.rotate(self.originalPointer, self.angle)
+        self.rect = self.image.get_rect(center=self.rect.center)
+        self.angle += self.rotationSpeed
 
         # Reveal
-        elif all(player.directionSelected for player in players):
-            if self.selectedRotation is not None:
-                self.image = pygame.transform.rotate(self.originalPointer, self.selectedRotation)
-                self.rect = self.image.get_rect(center=self.rect.center)
+        # elif all(player.directionSelected for player in players):
+        #     if self.selectedRotation is not None:
 
+    def update_end(self, angle):
+        self.image = pygame.transform.rotate(self.originalPointer, angle)
+        self.rect = self.image.get_rect(center=self.rect.center)
