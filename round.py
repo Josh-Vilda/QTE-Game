@@ -2,7 +2,7 @@ import pygame
 
 
 class Round:
-    def __init__(self, round_id, player_1, player_2, screen ):
+    def __init__(self, round_id, player_1, player_2, screen):
         self.round_id = round_id
         self.player_1 = player_1
         self.player_2 = player_2
@@ -37,3 +37,6 @@ class Round:
 
     def get_is_match(self):
         return self.is_match
+
+    def get_is_current_round(self):
+        return self.is_current_round
