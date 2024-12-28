@@ -8,6 +8,7 @@ from player import Player
 from round import Round
 from score import guessingScore
 from banner import Banner
+from gpiozero import Button
 
 ROUND_COUNT = 3
 NUM_PLAYERS = 2
@@ -32,9 +33,19 @@ def main(currentGuesser, player1Score, player2Score):
 
     rounds = []
 
+    p1UpButton = Button(5)
+    p1DownButton = Button(6)
+    p1RightButton = Button(13)
+    p1LeftButton = Button(19)
+
+    p2UpButton = Button(12)
+    p2DownButton = Button(16)
+    p2RightButton = Button(20)
+    p2LeftButton = Button(21)    
+                   
     for i in range(1, ROUND_COUNT + 1):
-        player1 = Player(1, 300 * i, 5, 6, 13, 19) # UP, DOWN, RIGHT,LEFT
-        player2 = Player(2, 300 * i, 12, 16, 20, 21)
+        player1 = Player(1, 300 * i, p1UpButton, p1DownButton, p1RightButton, p1LeftButton) # UP, DOWN, RIGHT,LEFT
+        player2 = Player(2, 300 * i, p2UpButton, p2DownButton, p2RightButton, p2LeftButton)
         rounds.append(Round(i, player1, player2, screen))
     match_count = 0
     rounds[match_count].set_current_round(True)

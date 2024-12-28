@@ -3,14 +3,15 @@ from gpiozero import Button
 
 class Player(pygame.sprite.Sprite):
 
-    def __init__(self, playerNum, x_pos, upPin, downPin, rightPin, leftPin):
+    def __init__(self, playerNum, x_pos, upBTN, downBTN , rightBTN, leftBTN):
         super().__init__()
         self.x_pos = x_pos
         self.playerNum = playerNum
-        self.upButton = Button(upPin)
-        self.downButton = Button(downPin)
-        self.rightButton = Button(rightPin)
-        self.leftButton = Button(leftPin)       
+        self.upButton = upBTN
+        self.downButton = downBTN
+        self.rightButton = rightBTN
+        self.leftButton = leftBTN
+               
         '''
         when we impliment GPIO replace key with
         self.up_button = Button(upPin)
