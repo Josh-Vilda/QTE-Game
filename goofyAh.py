@@ -7,23 +7,28 @@ import score
 from player import Player
 from round import Round
 from score import guessingScore
+from banner import Banner
 
 ROUND_COUNT = 3
 NUM_PLAYERS = 2
 
+screen = pygame.display.set_mode((1280, 1024))
 def main(currentGuesser, player1Score, player2Score):
     pygame.init()
-    screen = pygame.display.set_mode((1280, 1024))
     pygame.display.set_caption('Your Mom')
     clock = pygame.time.Clock()
     game_active = True
 
+    wiiBackground = pygame.image.load("assets/sunshine.jpg")
     mainMenuBG = pygame.image.load("assets/main_menu_bg.png")
+    banner = pygame.image.load("assets/banner.png")
+
+
     font = pygame.font.Font('assets/wiiMenuFont.ttf', 48)
     guesserFont = pygame.font.Font('assets/wiiMenuFont.ttf', 70)
 
-    screen.fill((255, 255, 255))
-    screen.blit(mainMenuBG, (0, 0))
+    screen.blit(wiiBackground, (0, 0))
+    wiiBackground.blit(mainMenuBG, (0, 0))
 
     rounds = []
 
@@ -40,13 +45,14 @@ def main(currentGuesser, player1Score, player2Score):
     #
     while is_running:
         screen.fill((255, 255, 255))
-        screen.blit(mainMenuBG, (0, 0))
+        screen.blit(wiiBackground, (0, 0))
+        wiiBackground.blit(mainMenuBG, (0, 0))
 
-        guesser_text = font.render(f'PLAYER {currentGuesser} IS GUESSING', True, 'grey')
+        guesser_text = font.render(f'PLAYER {currentGuesser} IS GUESSING', True, 'white')
         screen.blit(guesser_text, (380, 50))
 
-        score1_text = font.render(f'Player 1: {player1Score.get_score()}', True, (0, 0, 0))
-        score2_text = font.render(f'Player 2: {player2Score.get_score()}', True, (0, 0, 0))
+        score1_text = font.render(f'Player 1: {player1Score.get_score()}', True, 'darkgoldenrod2')
+        score2_text = font.render(f'Player 2: {player2Score.get_score()}', True, 'darkgoldenrod2')
         screen.blit(score1_text, (50, 50))
         screen.blit(score2_text, (974, 50))
 
@@ -60,12 +66,8 @@ def main(currentGuesser, player1Score, player2Score):
                 exit()
 
             if not game_active:
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                    is_running = False
-
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
-                    player1Score = guessingScore()
-                    player2Score = guessingScore()
+                pygame.time.wait(500)
+                is_running = False
 
         if game_active:
 
@@ -73,11 +75,13 @@ def main(currentGuesser, player1Score, player2Score):
 
             if rounds[match_count].get_is_match():
                 time.sleep(0.15)
+
                 if match_count >= ROUND_COUNT - 1:
                     guessingScore.gameWon = True
-                    game_active = False
+                    is_running = False
 
                 else:
+                    rounds[match_count + 1].prev_guess.append(rounds[match_count].player_1_direction)
                     match_count += 1
                     rounds[match_count].set_current_round(True)
 
