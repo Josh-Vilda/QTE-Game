@@ -14,6 +14,7 @@ ROUND_COUNT = 3
 NUM_PLAYERS = 2
 
 screen = pygame.display.set_mode((1280, 1024))
+DISPLAYSURF = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
 p1UpButton = Button(5)
 p1DownButton = Button(6)
