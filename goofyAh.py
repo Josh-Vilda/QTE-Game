@@ -14,6 +14,16 @@ ROUND_COUNT = 3
 NUM_PLAYERS = 2
 
 screen = pygame.display.set_mode((1280, 1024))
+
+p1UpButton = Button(5)
+p1DownButton = Button(6)
+p1RightButton = Button(13)
+p1LeftButton = Button(19)
+
+p2UpButton = Button(12)
+p2DownButton = Button(16)
+p2RightButton = Button(20)
+p2LeftButton = Button(21)    
 def main(currentGuesser, player1Score, player2Score):
     pygame.init()
     pygame.display.set_caption('Your Mom')
@@ -32,16 +42,6 @@ def main(currentGuesser, player1Score, player2Score):
     wiiBackground.blit(mainMenuBG, (0, 0))
 
     rounds = []
-
-    p1UpButton = Button(5)
-    p1DownButton = Button(6)
-    p1RightButton = Button(13)
-    p1LeftButton = Button(19)
-
-    p2UpButton = Button(12)
-    p2DownButton = Button(16)
-    p2RightButton = Button(20)
-    p2LeftButton = Button(21)    
                    
     for i in range(1, ROUND_COUNT + 1):
         player1 = Player(1, 300 * i, p1UpButton, p1DownButton, p1RightButton, p1LeftButton) # UP, DOWN, RIGHT,LEFT
