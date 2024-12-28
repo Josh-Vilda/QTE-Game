@@ -21,7 +21,7 @@ def main(currentGuesser, player1Score, player2Score):
 
     wiiBackground = pygame.image.load("assets/sunshine.jpg")
     mainMenuBG = pygame.image.load("assets/main_menu_bg.png")
-    banner = pygame.image.load("assets/banner.png")
+    #banner = pygame.image.load("assets/banner.png")
 
 
     font = pygame.font.Font('assets/wiiMenuFont.ttf', 48)
@@ -33,8 +33,8 @@ def main(currentGuesser, player1Score, player2Score):
     rounds = []
 
     for i in range(1, ROUND_COUNT + 1):
-        player1 = Player(1, 300 * i, pygame.K_w, pygame.K_d, pygame.K_s, pygame.K_a)
-        player2 = Player(2, 300 * i, pygame.K_UP, pygame.K_RIGHT, pygame.K_DOWN, pygame.K_LEFT)
+        player1 = Player(1, 300 * i, 5, 6, 13, 19) # UP, DOWN, RIGHT,LEFT
+        player2 = Player(2, 300 * i, 12, 16, 20, 21)
         rounds.append(Round(i, player1, player2, screen))
     match_count = 0
     rounds[match_count].set_current_round(True)
