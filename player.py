@@ -18,6 +18,7 @@ class Player(pygame.sprite.Sprite):
         ...
         '''
 
+
         if self.playerNum == 1:
             self.originalPointer = pygame.image.load('assets/p1PointerUp.png').convert_alpha()
             y_pos = 300
@@ -33,6 +34,7 @@ class Player(pygame.sprite.Sprite):
 
 
     def get_input(self):
+
         # switch match case
         #replace line 35 and each if statement with if self.upButton.is_pressed 
         angle = None
@@ -46,15 +48,22 @@ class Player(pygame.sprite.Sprite):
             angle = 90
         return angle
 
-    def update(self):
+    def update(self, guesses):
         # Continuous rotation
         self.image = pygame.transform.rotate(self.originalPointer, self.angle)
         self.rect = self.image.get_rect(center=self.rect.center)
         self.angle += self.rotationSpeed
+        self.angle %= 360
+        print(self.angle)
 
-        # Reveal
-        # elif all(player.directionSelected for player in players):
-        #     if self.selectedRotation is not None:
+        for x in guesses:
+            self.limits.add(x + 90)
+            self.limits.add(x - 90)
+
+        if self.limits:
+            sorted(self.limits)
+            if self.angle > min(self.limits) and self.angle < max(self.limits):
+                self.angle = max(self.limits)
 
     def update_end(self, angle):
         self.image = pygame.transform.rotate(self.originalPointer, angle)
