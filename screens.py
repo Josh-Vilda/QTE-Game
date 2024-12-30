@@ -12,6 +12,7 @@ def main_menu(screen):
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                #running = False
                 pygame.quit()
                 exit()
             elif event.type == pygame.KEYUP:

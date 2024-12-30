@@ -1,16 +1,23 @@
 import pygame
+from gpiozero import Button
 
 class Player(pygame.sprite.Sprite):
 
-    def __init__(self, playerNum, x_pos, up_key, right_key, down_key, left_key):
+    def __init__(self, playerNum, x_pos, upBTN, downBTN , rightBTN, leftBTN):
         super().__init__()
         self.x_pos = x_pos
         self.playerNum = playerNum
-        self.up_key = up_key
-        self.right_key = right_key
-        self.down_key = down_key
-        self.left_key = left_key
-        self.limits = set()
+        self.upButton = upBTN
+        self.downButton = downBTN
+        self.rightButton = rightBTN
+        self.leftButton = leftBTN
+               
+        '''
+        when we impliment GPIO replace key with
+        self.up_button = Button(upPin)
+        ...
+        '''
+
 
         if self.playerNum == 1:
             self.originalPointer = pygame.image.load('assets/p1PointerUp.png').convert_alpha()
@@ -27,16 +34,17 @@ class Player(pygame.sprite.Sprite):
 
 
     def get_input(self):
-        keys = pygame.key.get_pressed()
+
         # switch match case
+        #replace line 35 and each if statement with if self.upButton.is_pressed 
         angle = None
-        if keys[self.up_key]:
+        if self.upButton.is_pressed:
             angle = 0
-        elif keys[self.right_key]:
-            angle = -90
-        elif keys[self.down_key]:
+        elif self.rightButton.is_pressed:
+            angle = 270
+        elif self.downButton.is_pressed:
             angle = 180
-        elif keys[self.left_key]:
+        elif self.leftButton.is_pressed:
             angle = 90
         return angle
 

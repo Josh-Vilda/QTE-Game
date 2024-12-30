@@ -18,6 +18,7 @@ class Round:
     def update(self):
         self.players.draw(self.screen)
         if self.is_current_round:
+
             self.player_1.update(self.prev_guess)
             self.player_2.update(self.prev_guess)
         else:

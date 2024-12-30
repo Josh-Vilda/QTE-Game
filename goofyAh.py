@@ -3,22 +3,38 @@ import time
 import pygame
 from sys import exit
 
-import random
+
+import score
 from player import Player
 from round import Round
 from score import guessingScore
+from banner import Banner
+from gpiozero import Button
+import random
 
 ROUND_COUNT = 3
 NUM_PLAYERS = 2
 
 screen = pygame.display.set_mode((1280, 1024))
+DISPLAYSURF = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+
+p1UpButton = Button(5)
+p1DownButton = Button(6)
+p1RightButton = Button(13)
+p1LeftButton = Button(19)
+
+p2UpButton = Button(12)
+p2DownButton = Button(16)
+p2RightButton = Button(20)
+p2LeftButton = Button(21)    
+
 def main(currentGuesser, player1Score, player2Score):
     pygame.init()
     pygame.display.set_caption('Your Mom')
     clock = pygame.time.Clock()
     game_active = True
 
-
+    
     wiiBackground1 = pygame.image.load("assets/Matt/matt1.jpg")
 
     wiiBackground2 = pygame.image.load("assets/Matt/matt2.jpg")
@@ -69,12 +85,11 @@ def main(currentGuesser, player1Score, player2Score):
     screen.blit(guesser_sign , (390, 35))
 
     rounds = []
-
+    
     for i in range(1, ROUND_COUNT + 1):
-        player1 = Player(1, 300 * i, pygame.K_w, pygame.K_d, pygame.K_s, pygame.K_a)
-        player2 = Player(2, 300 * i, pygame.K_UP, pygame.K_RIGHT, pygame.K_DOWN, pygame.K_LEFT)
+        player1 = Player(1, 300 * i, p1UpButton, p1DownButton, p1RightButton, p1LeftButton) # UP, DOWN, RIGHT,LEFT
+        player2 = Player(2, 300 * i, p2UpButton, p2DownButton, p2RightButton, p2LeftButton)
         rounds.append(Round(i, player1, player2, screen))
-
 
     match_count = 0
     rounds[match_count].set_current_round(True)
@@ -85,6 +100,7 @@ def main(currentGuesser, player1Score, player2Score):
     #
     while is_running:
         screen.fill((255, 255, 255))
+
         backgroundPicker(backgroundIndex, backgroundArray)
         screen.blit(mainMenuBG, (0, 0))
         screen.blit(guesser_sign, (390, 35))
@@ -117,6 +133,7 @@ def main(currentGuesser, player1Score, player2Score):
                 is_running = False
 
         if game_active:
+
             rounds[match_count].check_match()
 
             if rounds[match_count].get_is_match():
@@ -167,7 +184,7 @@ def main(currentGuesser, player1Score, player2Score):
 
         pygame.display.update()
         clock.tick(60)
-
+        
 def backgroundPicker(backgroundIndex, array):
     if backgroundIndex == 1:
         screen.blit(array[0], (0, 0))
@@ -189,6 +206,7 @@ def backgroundPicker(backgroundIndex, array):
 
     elif backgroundIndex == 7:
         screen.blit(array[6], (0, -350))
+
 
 if __name__ == '__main__':
     currentGuesser = 1
