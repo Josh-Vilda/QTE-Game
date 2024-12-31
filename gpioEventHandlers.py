@@ -1,10 +1,12 @@
-import RPi.GPIO as GPIO
+import gpiozero 
 import pygame
 import sys
 import time
 
+
+
 def drink(seconds,relay):
-     GPIO.setmode(GPIO.BCM)
-     GPIO.output(relay,1)
-     time.sleep(seconds)
-     GPIO.output(relay,0)
+     start_time = time.time()
+     while(time.time()-start_time<= seconds):
+          relay.on()
+     relay.off()     

@@ -9,7 +9,7 @@ from player import Player
 from round import Round
 from score import guessingScore
 from banner import Banner
-from gpiozero import Button
+from gpiozero import *
 from gpioEventHandlers import drink
 import random
 import threading
@@ -18,9 +18,10 @@ import threading
 ROUND_COUNT = 3
 NUM_PLAYERS = 2
 RELAY_P1_PIN = 2
+p1Relay = gpiozero.OutputDevice(RELAY_P1_PIN,active_high=True,  initial_value = False)
 RELAY_P2_PIN = 3
-drinkingP1Thread = threading.Thread(target=drink,args=(RELAY_P1_PIN,))
-drinkingP2Thread = threading.Thread(target=drink,args=(RELAY_P2_PIN,))
+p2Relay = gpiozero.OutputDevice(RELAY_P2_PIN,active_high=True,  initial_value = False)
+
 screen = pygame.display.set_mode((1280, 1024))
 DISPLAYSURF = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
@@ -165,14 +166,14 @@ def main(currentGuesser, player1Score, player2Score):
                             pygame.draw.rect(screen, (26,183,234), pygame.Rect(0, 195, 1280, 500))
                             win_text_1 = marioFont.render(f'PLAYER 2', True, 'white')
                             win_text_2 = marioFont.render(f'DRINKS!', True, 'white')
-                            drinkingP1Thread.start()
+                            drink(8,p1Relay)
                             screen.blit(win_text_1, (130, 255))
                             screen.blit(win_text_2, (230, 455))
                         else:
                             pygame.draw.rect(screen, (26,183,234), pygame.Rect(0, 195, 1280, 500))
                             win_text_1 = marioFont.render(f'PLAYER 1', True, 'white')
                             win_text_2 = marioFont.render(f'DRINKS!', True, 'white')
-                            drinkingP2Thread.start()
+                            drink(8,p2Relay)
                             screen.blit(win_text_1, (130, 255))
                             screen.blit(win_text_2, (230, 455))
 
