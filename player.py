@@ -11,7 +11,8 @@ class Player(pygame.sprite.Sprite):
         self.downButton = downBTN
         self.rightButton = rightBTN
         self.leftButton = leftBTN
-               
+        self.limits = set()
+       
         '''
         when we impliment GPIO replace key with
         self.up_button = Button(upPin)
@@ -30,7 +31,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=(self.x_pos, y_pos))
 
         self.angle = 0
-        self.rotationSpeed = 5
+        self.rotationSpeed = 10
 
 
     def get_input(self):
@@ -54,7 +55,6 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=self.rect.center)
         self.angle += self.rotationSpeed
         self.angle %= 360
-        print(self.angle)
 
         for x in guesses:
             self.limits.add(x + 90)

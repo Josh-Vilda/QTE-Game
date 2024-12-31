@@ -38,6 +38,7 @@ def main(currentGuesser, player1Score, player2Score):
     wiiBackground1 = pygame.image.load("assets/Matt/matt1.jpg")
 
     wiiBackground2 = pygame.image.load("assets/Matt/matt2.jpg")
+    print("matt2")
     wiiBackground2 = pygame.transform.scale_by(wiiBackground2, 6)
 
     wiiBackground3 = pygame.image.load("assets/Matt/matt3.jpg")
