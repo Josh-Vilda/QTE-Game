@@ -9,6 +9,7 @@ from player import Player
 from round import Round
 from score import guessingScore
 from banner import Banner
+import gpiozero
 from gpiozero import *
 from gpioEventHandlers import drink
 import random
@@ -166,16 +167,16 @@ def main(currentGuesser, player1Score, player2Score):
                             pygame.draw.rect(screen, (26,183,234), pygame.Rect(0, 195, 1280, 500))
                             win_text_1 = marioFont.render(f'PLAYER 2', True, 'white')
                             win_text_2 = marioFont.render(f'DRINKS!', True, 'white')
-                            drink(8,p1Relay)
                             screen.blit(win_text_1, (130, 255))
                             screen.blit(win_text_2, (230, 455))
+                            drink(8,p1Relay)
                         else:
                             pygame.draw.rect(screen, (26,183,234), pygame.Rect(0, 195, 1280, 500))
                             win_text_1 = marioFont.render(f'PLAYER 1', True, 'white')
                             win_text_2 = marioFont.render(f'DRINKS!', True, 'white')
-                            drink(8,p2Relay)
                             screen.blit(win_text_1, (130, 255))
                             screen.blit(win_text_2, (230, 455))
+                            drink(8,p2Relay)
 
                         pygame.display.update()
                         clock.tick(60)

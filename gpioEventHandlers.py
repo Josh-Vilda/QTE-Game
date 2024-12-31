@@ -9,4 +9,5 @@ def drink(seconds,relay):
      start_time = time.time()
      while(time.time()-start_time<= seconds):
           relay.on()
-     relay.off()     
+     relay.off()
+     print("Turning off relay")
