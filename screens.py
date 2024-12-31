@@ -1,5 +1,6 @@
 #different screns are different game loops
 import pygame
+from sys import exit
 from player import Player
 
 mainMenuBG = pygame.image.load("assets/main_menu_bg.png")
@@ -11,7 +12,8 @@ def main_menu(screen):
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                pygame.quit()
+                exit()
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_1:
                     print("p1")

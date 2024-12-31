@@ -12,29 +12,30 @@ class Round:
         self.player_2_direction = None
         self.is_match = False
         self.is_current_round = False
-        self.prev_guess = []
+        self.prev_guess = set()
 
 
     def update(self):
         self.players.draw(self.screen)
         if self.is_current_round:
-            self.player_1.update()
-            self.player_2.update()
+            self.player_1.update(self.prev_guess)
+            self.player_2.update(self.prev_guess)
         else:
             self.player_1.update_end(self.player_1_direction)
             self.player_2.update_end(self.player_2_direction)
 
     def check_match(self):
         if not self.is_match:
-            if self.player_1.get_input() is not None and self.player_1.get_input()  not in self.prev_guess:
+            if self.player_1.get_input() is not None and self.player_1.get_input() not in self.prev_guess:
                 self.player_1_direction = self.player_1.get_input()
             else:
                 self.player_1_direction = self.player_1_direction
 
-            if self.player_2.get_input() is not None and self.player_2.get_input()  not in self.prev_guess:
+            if self.player_2.get_input() is not None and self.player_2.get_input() not in self.prev_guess:
                 self.player_2_direction = self.player_2.get_input()
             else:
                 self.player_2_direction = self.player_2_direction
+
             if self.player_1_direction  is not None and self.player_2_direction is not None:
                 if self.player_1_direction == self.player_2_direction:
                     self.is_match = True
