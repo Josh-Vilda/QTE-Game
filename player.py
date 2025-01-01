@@ -46,7 +46,12 @@ class Player(pygame.sprite.Sprite):
 
     def update(self, guesses):
         # Continuous rotation
-        if 0 in guesses or 90 in guesses:
+        if 90 in guesses and 180 in guesses:
+            self.image = pygame.transform.rotate(self.originalPointer, self.angle - 90)
+        elif -90 in guesses and 180 in guesses:
+            self.image = pygame.transform.rotate(self.originalPointer, self.angle)
+
+        elif 0 in guesses or -90 in guesses:
             self.image = pygame.transform.rotate(self.originalPointer, 180 + self.angle)
         else:
             self.image = pygame.transform.rotate(self.originalPointer, self.angle)
@@ -57,7 +62,7 @@ class Player(pygame.sprite.Sprite):
 
         for x in guesses:
             self.limits.add((x + 90) % 360)
-            self.limits.add((x - 90 + 360) % 360)
+            self.limits.add((x - 90) % 360)
 
         if 0 in guesses and 180 in guesses:
 
@@ -90,24 +95,26 @@ class Player(pygame.sprite.Sprite):
 
         elif self.limits:
             print(self.limits)
-
             if -90 in guesses and 0 in guesses:
-                if self.angle == list(self.limits)[-2] or self.angle == list(self.limits)[-3]:
+                if self.angle == (list(self.limits)[-2] + 80) or self.angle == (list(self.limits)[-3] - 80):
                     self.rotationSpeed *= -1
             elif -90 in guesses and 180 in guesses:
                 if self.angle == list(self.limits)[-3] or self.angle == list(self.limits)[-4]:
                     self.rotationSpeed *= -1
             elif 90 in guesses and 0 in guesses:
-                if self.angle == list(self.limits)[-1] or self.angle == list(self.limits)[-2]:
+                if self.angle == (list(self.limits)[-2] - 80) or self.angle == (list(self.limits)[-1] + 80):
                     self.rotationSpeed *= -1
             elif 90 in guesses and 180 in guesses:
-                if self.angle == list(self.limits)[-1] or self.angle == list(self.limits)[0]:
+                if self.angle == (list(self.limits)[-1] + 80) or self.angle == (list(self.limits)[-4] + 100):
                     self.rotationSpeed *= -1
             elif 0 in guesses:
-                if self.angle == list(self.limits)[-1] or self.angle == list(self.limits)[-2]:
+                if self.angle == (list(self.limits)[-1] - 40) or self.angle == (list(self.limits)[-2]):
+                    self.rotationSpeed *= -1
+            elif -90 in guesses:
+                if self.angle == (list(self.limits)[-1] - 15) or self.angle == (list(self.limits)[-2] + 5):
                     self.rotationSpeed *= -1
             else:
-                if self.angle == max(self.limits) or self.angle == min(self.limits):
+                if self.angle == (max(self.limits) - 40) or self.angle == (min(self.limits) + 20):
                     self.rotationSpeed *= -1
 
     def update_end(self, angle):

@@ -47,14 +47,11 @@ def main(currentGuesser, player1Score, player2Score):
     guesser_sign = pygame.image.load("assets/guessing.png").convert_alpha()
     guesser_sign = pygame.transform.scale_by(guesser_sign, 2.5)
 
-    player_1_drinks = pygame.image.load("assets/Player_1_Drinks.png").convert_alpha()
-    player_2_drinks = pygame.image.load("assets/Player_2_Drinks.png").convert_alpha()
+    drinking_sign = pygame.image.load("assets/deco.png").convert_alpha()
+    drinking_sign = pygame.transform.scale_by(drinking_sign, 17)
 
     crown = pygame.image.load("assets/crown.png").convert_alpha()
     crown = pygame.transform.scale_by(crown, 0.5)
-
-    player_1_drinks = pygame.transform.smoothscale_by(player_1_drinks, 1.35)
-    player_2_drinks = pygame.transform.smoothscale_by(player_2_drinks, 1.35)
 
     font = pygame.font.Font('assets/wiiMenuFont.ttf', 40)
     guesserFont = pygame.font.Font('assets/wiiMenuFontBold.ttf', 48)
@@ -139,13 +136,13 @@ def main(currentGuesser, player1Score, player2Score):
                             if event.type == HIDE_WINNING_MESSAGE:
                                 show_winning_message = False
                         if currentGuesser == 1:
-                            pygame.draw.rect(screen, (26,183,234), pygame.Rect(0, 195, 1280, 500))
+                            screen.blit(drinking_sign, (-23, 157))
                             win_text_1 = marioFont.render(f'PLAYER 2', True, 'white')
                             win_text_2 = marioFont.render(f'DRINKS!', True, 'white')
                             screen.blit(win_text_1, (140, 255))
                             screen.blit(win_text_2, (240, 455))
                         else:
-                            pygame.draw.rect(screen, (26,183,234), pygame.Rect(0, 195, 1280, 500))
+                            screen.blit(drinking_sign, (-23, 157))
                             win_text_1 = marioFont.render(f'PLAYER 1', True, 'white')
                             win_text_2 = marioFont.render(f'DRINKS!', True, 'white')
                             screen.blit(win_text_1, (140, 255))
