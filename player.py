@@ -94,7 +94,6 @@ class Player(pygame.sprite.Sprite):
                 self.last_time = current_time
 
         elif self.limits:
-            print(self.limits)
             if -90 in guesses and 0 in guesses:
                 if self.angle == (list(self.limits)[-2] + 80) or self.angle == (list(self.limits)[-3] - 80):
                     self.rotationSpeed *= -1
