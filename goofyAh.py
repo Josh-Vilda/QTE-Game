@@ -11,6 +11,7 @@ from score import guessingScore
 from banner import Banner
 import gpiozero
 from gpiozero import *
+import gpiozero
 from gpioEventHandlers import drink
 import random
 import threading
@@ -169,14 +170,16 @@ def main(currentGuesser, player1Score, player2Score):
                             win_text_2 = marioFont.render(f'DRINKS!', True, 'white')
                             screen.blit(win_text_1, (130, 255))
                             screen.blit(win_text_2, (230, 455))
-                            drink(8,p1Relay)
+                            pygame.display.update()
+                            drink(6,p1Relay)
                         else:
                             pygame.draw.rect(screen, (26,183,234), pygame.Rect(0, 195, 1280, 500))
                             win_text_1 = marioFont.render(f'PLAYER 1', True, 'white')
                             win_text_2 = marioFont.render(f'DRINKS!', True, 'white')
                             screen.blit(win_text_1, (130, 255))
                             screen.blit(win_text_2, (230, 455))
-                            drink(8,p2Relay)
+                            pygame.display.update()
+                            drink(6,p2Relay)
 
                         pygame.display.update()
                         clock.tick(60)
@@ -187,6 +190,10 @@ def main(currentGuesser, player1Score, player2Score):
                 else:
                     rounds[match_count + 1].prev_guess.append(rounds[match_count].player_1_direction)
                     match_count += 1
+                    if currentGuesser == 1: 
+                        drink(2* match_count,p1Relay)
+                    else:
+                        drink(2* match_count,p2Relay)   
                     rounds[match_count].set_current_round(True)
 
             elif not rounds[match_count].get_is_match() and not rounds[match_count].get_is_current_round():
