@@ -10,11 +10,20 @@ from player import Player
 from round import Round
 from score import guessingScore
 from banner import Banner
-from gpiozero import Button
+import gpiozero
+from gpiozero import *
+import gpiozero
+from gpioEventHandlers import drink
 import random
+import threading
+
 
 ROUND_COUNT = 3
 NUM_PLAYERS = 2
+RELAY_P1_PIN = 2
+p1Relay = gpiozero.OutputDevice(RELAY_P1_PIN,active_high=True,  initial_value = False)
+RELAY_P2_PIN = 3
+p2Relay = gpiozero.OutputDevice(RELAY_P2_PIN,active_high=True,  initial_value = False)
 
 screen = pygame.display.set_mode((1280, 1024))
 DISPLAYSURF = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
@@ -40,8 +49,6 @@ def main(currentGuesser, player1Score, player2Score):
     wiiBackground1 = pygame.image.load("assets/Matt/matt1.jpg")
 
     wiiBackground2 = pygame.image.load("assets/Matt/matt2.jpg")
-
-
     wiiBackground2 = pygame.transform.scale_by(wiiBackground2, 6)
 
     wiiBackground3 = pygame.image.load("assets/Matt/matt3.jpg")
@@ -162,8 +169,10 @@ def main(currentGuesser, player1Score, player2Score):
                             screen.blit(drinking_sign, (-23, 157))
                             win_text_1 = marioFont.render(f'PLAYER 2', True, 'white')
                             win_text_2 = marioFont.render(f'DRINKS!', True, 'white')
-                            screen.blit(win_text_1, (140, 255))
-                            screen.blit(win_text_2, (240, 455))
+                            screen.blit(win_text_1, (130, 255))
+                            screen.blit(win_text_2, (230, 455))
+                            pygame.display.update()
+                            drink(6,p1Relay)
                         else:
                             screen.blit(drinking_sign, (-23, 157))
                             win_text_1 = marioFont.render(f'PLAYER 1', True, 'white')
@@ -181,6 +190,10 @@ def main(currentGuesser, player1Score, player2Score):
                     rounds[match_count + 1].prev_guess.add(rounds[match_count].player_1_direction)
                     rounds[match_count + 1].prev_guess = rounds[match_count + 1].prev_guess | rounds[match_count].prev_guess
                     match_count += 1
+                    if currentGuesser == 1: 
+                        drink(2* match_count,p1Relay)
+                    else:
+                        drink(2* match_count,p2Relay)   
                     rounds[match_count].set_current_round(True)
 
             elif not rounds[match_count].get_is_match() and not rounds[match_count].get_is_current_round():
