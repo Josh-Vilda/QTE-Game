@@ -1,6 +1,9 @@
 import pygame
+<<<<<<< HEAD
 from time import sleep, time
+=======
 from gpiozero import Button
+>>>>>>> main
 
 class Player(pygame.sprite.Sprite):
 

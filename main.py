@@ -1,4 +1,3 @@
-
 import pygame
 from screens import main_menu
 

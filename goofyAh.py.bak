@@ -159,6 +159,7 @@ def main(currentGuesser, player1Score, player2Score):
                             if event.type == HIDE_WINNING_MESSAGE:
                                 show_winning_message = False
                         if currentGuesser == 1:
+<<<<<<< HEAD
                             screen.blit(drinking_sign, (-23, 157))
                             win_text_1 = marioFont.render(f'PLAYER 2', True, 'white')
                             win_text_2 = marioFont.render(f'DRINKS!', True, 'white')
