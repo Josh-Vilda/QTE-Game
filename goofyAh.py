@@ -3,15 +3,32 @@ import time
 import pygame
 from sys import exit
 
-import random
+
+
+import score
 from player import Player
 from round import Round
 from score import guessingScore
+from banner import Banner
+from gpiozero import Button
+import random
 
 ROUND_COUNT = 3
 NUM_PLAYERS = 2
 
 screen = pygame.display.set_mode((1280, 1024))
+DISPLAYSURF = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+
+p1UpButton = Button(5)
+p1DownButton = Button(6)
+p1RightButton = Button(13)
+p1LeftButton = Button(19)
+
+p2UpButton = Button(12)
+p2DownButton = Button(16)
+p2RightButton = Button(20)
+p2LeftButton = Button(21)    
+
 def main(currentGuesser, player1Score, player2Score):
     pygame.init()
     pygame.display.set_caption('Your Mom')
@@ -19,9 +36,12 @@ def main(currentGuesser, player1Score, player2Score):
     game_active = True
 
 
+
     wiiBackground1 = pygame.image.load("assets/Matt/matt1.jpg")
 
     wiiBackground2 = pygame.image.load("assets/Matt/matt2.jpg")
+
+
     wiiBackground2 = pygame.transform.scale_by(wiiBackground2, 6)
 
     wiiBackground3 = pygame.image.load("assets/Matt/matt3.jpg")
@@ -53,6 +73,10 @@ def main(currentGuesser, player1Score, player2Score):
     crown = pygame.image.load("assets/crown.png").convert_alpha()
     crown = pygame.transform.scale_by(crown, 0.5)
 
+#you might need to remove the next two lines
+    player_1_drinks = pygame.transform.smoothscale_by(player_1_drinks, 1.35)
+    player_2_drinks = pygame.transform.smoothscale_by(player_2_drinks, 1.35)
+
     font = pygame.font.Font('assets/wiiMenuFont.ttf', 40)
     guesserFont = pygame.font.Font('assets/wiiMenuFontBold.ttf', 48)
     guesserFont.set_italic(True)
@@ -66,12 +90,11 @@ def main(currentGuesser, player1Score, player2Score):
     screen.blit(guesser_sign , (390, 35))
 
     rounds = []
-
+    
     for i in range(1, ROUND_COUNT + 1):
-        player1 = Player(1, 300 * i, pygame.K_w, pygame.K_d, pygame.K_s, pygame.K_a)
-        player2 = Player(2, 300 * i, pygame.K_UP, pygame.K_RIGHT, pygame.K_DOWN, pygame.K_LEFT)
+        player1 = Player(1, 300 * i, p1UpButton, p1DownButton, p1RightButton, p1LeftButton) # UP, DOWN, RIGHT,LEFT
+        player2 = Player(2, 300 * i, p2UpButton, p2DownButton, p2RightButton, p2LeftButton)
         rounds.append(Round(i, player1, player2, screen))
-
 
     match_count = 0
     rounds[match_count].set_current_round(True)
@@ -165,6 +188,29 @@ def main(currentGuesser, player1Score, player2Score):
 
         pygame.display.update()
         clock.tick(60)
+        
+def backgroundPicker(backgroundIndex, array):
+    if backgroundIndex == 1:
+        screen.blit(array[0], (0, 0))
+
+    elif backgroundIndex == 2:
+        screen.blit(array[1], (0, -200))
+
+    elif backgroundIndex == 3:
+        screen.blit(array[2], (0, -60))
+
+    elif backgroundIndex == 4:
+        screen.blit(array[3], (0, 0))
+
+    elif backgroundIndex == 5:
+        screen.blit(array[4], (0, -50))
+
+    elif backgroundIndex == 6:
+        screen.blit(array[5], (0, 0))
+
+    elif backgroundIndex == 7:
+        screen.blit(array[6], (0, -350))
+
 
 def backgroundPicker(backgroundIndex, array):
     if backgroundIndex == 1:

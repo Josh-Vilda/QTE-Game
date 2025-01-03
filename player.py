@@ -1,9 +1,10 @@
 import pygame
 from time import sleep, time
+from gpiozero import Button
 
 class Player(pygame.sprite.Sprite):
 
-    def __init__(self, playerNum, x_pos, up_key, right_key, down_key, left_key):
+    def __init__(self, playerNum, x_pos, upBTN, downBTN , rightBTN, leftBTN):
         super().__init__()
         self.x_pos = x_pos
         self.playerNum = playerNum
@@ -26,21 +27,22 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=(self.x_pos, y_pos))
 
         self.angle = 0
-        self.rotationSpeed = 5
+        self.rotationSpeed = 10
         self.rotation_index = 0
 
 
     def get_input(self):
-        keys = pygame.key.get_pressed()
+
         # switch match case
+        #replace line 35 and each if statement with if self.upButton.is_pressed 
         angle = None
-        if keys[self.up_key]:
+        if self.upButton.is_pressed:
             angle = 0
         elif keys[self.right_key]:
             angle = -90
         elif keys[self.down_key]:
             angle = 180
-        elif keys[self.left_key]:
+        elif self.leftButton.is_pressed:
             angle = 90
         return angle
 
@@ -115,6 +117,7 @@ class Player(pygame.sprite.Sprite):
             else:
                 if self.angle == (max(self.limits) - 40) or self.angle == (min(self.limits) + 20):
                     self.rotationSpeed *= -1
+
 
     def update_end(self, angle):
         self.image = pygame.transform.rotate(self.originalPointer, angle)
